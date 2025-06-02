@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        SERVICE = 'account'
+        SERVICE = 'account-service'
         NAME = "esthercaroline/${env.SERVICE}"
     }
     stages {
@@ -32,17 +32,4 @@ pipeline {
             }
         }
     }
-        stage('Deploy') {
-            steps {
-                
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-                    sh '''
-                        export KUBECONFIG=$KUBECONFIG_FILE
-                        kubectl apply -f k8s/k8s.yaml
-                    '''
-                    sh 'kubectl apply -f postgres.yaml'
-        }
-    }
-}
-
 }
