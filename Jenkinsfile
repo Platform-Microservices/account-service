@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        SERVICE = 'account-service'
+        SERVICE = 'account'
         NAME = "esthercaroline/${env.SERVICE}"
     }
     stages {
@@ -23,12 +23,6 @@ pipeline {
                     sh "docker buildx build --platform=linux/arm64,linux/amd64 --push --tag ${env.NAME}:latest --tag ${env.NAME}:${env.BUILD_ID} -f Dockerfile ."
                     sh "docker buildx rm --force multi-platform-builder-${env.SERVICE}"
                 }
-            }
-        }
-        stage('Deploy') { 
-            steps {
-                sh 'kubectl apply -f postgres.yaml'
-                sh 'kubectl apply -f k8s/k8s.yaml'
             }
         }
     }
